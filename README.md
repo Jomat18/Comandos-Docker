@@ -1,64 +1,25 @@
 # Comandos en Docker
 
-> Un container docker es un proceso
+> Un contenedor en docker es un proceso
 
 ### Mostrar la version de Docker
 ``` bash
 docker version
 ```
-### Ver estado y iniciar Daemon de Docker
+
+### Comandos para el daemon de Docker
 ``` bash
 sudo systemctl start docker
 sudo systemctl enable docker
 sudo systemctl status docker
 ```
+
 ### Mostrar información de Docker
 ``` bash
 docker info
 ```
-### Logearte a Docker Hub para subir tu imagen a un repositorio
 
-``` bash
-docker login
-docker login -u <<your_dockerhub_username>>
-```
-
-### Subir una imagen a Docker Hub
-``` bash
-docker push <<your_dockerhub_username>>/<<nodejs-image-demo>>
-```
-
-### Etiquetado en Docker
-``` bash
-docker tag <<nodejs-image-demo>> <<your_dockerhub_username>>/<<name-image>>
-```
-
-### Deslogearte de Docker Hub
-``` bash
-docker logout
-```
-
-### Mostrar los contenedores
-``` bash
-docker container ls  -a 
-```
-
-### Borrar un Contenedor por su id
-``` bash
-docker container rm id_container 
-```
-
-### Mostrar imagenes creadas
-``` bash
-docker images  
-```
-
-### Borrar una imagen por su ID
-``` bash
-docker image rm image-id 
-```
-
-### Descargar imagenes desde Docker Hub
+### Descargar imagenes desde Docker Hub (repositorio de imagenes)
 ``` bash
 docker pull image_name
 ```
@@ -73,50 +34,59 @@ docker pull postgres
 docker search postgres
 ```
 
-### Crear una imagen desde el Dockerfile de la carpeta actual
+### Crear una imagen desde un Dockerfile en la carpeta actual y etiquetarla
 ``` bash
 docker build -t <<your_dockerhub_username>>/<<image_name>>:<<version>> . 
 ```
 
 ### Ejemplo
 ``` bash
-docker build -t jl18/node-docker:v1.0.0 .  
+docker build -t jl18/node:v1.0.0 .  
 ```
 
-### Muestra los id todos los contenedores
+### Construir una imagen desde un Dockerfile con la etiqueta webserver
 ``` bash
-docker ps -aq
+docker build -t webserver .  
 ```
 
-### Detener todos los contenedores
+### Etiquetar una imagen en Docker
 ``` bash
-docker stop $(sudo docker ps -aq)
+docker tag <<image-name>> <<your_dockerhub_username>>/<<image-name>>
 ```
 
-### Eliminar todos los contenedores
+### Mostrar imagenes creadas
 ``` bash
-docker rm $(sudo docker ps -aq)
+docker images  
 ```
 
-### Eliminar todos los contenedores y volumenes
+### Borrar una imagen por su ID
 ``` bash
-docker rm -vf $(sudo docker ps -a -q) 
+docker image rm image-id 
 ```
 
-### Eliminar una imagen
+### Eliminar una imagen por su nombre
 ``` bash
-docker rmi name-image 
+docker rmi image-name
 ```
 
 ### Eliminar todas las imagenes
 ``` bash
-docker rmi -f $(sudo docker images -a -q)
+docker rmi -f $(docker images -aq)
+```
+
+### Correr contenedores de diferentes imagenes publicas desde Docker hub
+``` bash
+docker run ansible
+docker run mongodb
+docker run redis
+docker run nodejs
 ```
 
 ### Correr un contenedor en el puerto 80 para Docker Host y 8080 para la aplicacion de la imagen, -d significa modo detached
 ``` bash
 docker run --name <<container_name>> -p 80:8080 -d <<your_dockerhub_username>>/<<image_name>>
 ```
+
 ### Ejemplo corriendo un contenedor de la base de datos postgres, postgres escuchara en el puerto 5432 y la entrada al contenedor sera por el puerto 6551
 ``` bash
 docker run -d --name container_name -p 6551:5432 postgres
@@ -142,20 +112,49 @@ docker run --name test -d -it debian
 docker attach test 
 ```
 
-### exec es para ejecutar un comando en un container
+### Muestra los contenedores corriendo
+``` bash
+docker ps
+```
+
+### Muestra todos los contenedores, esten o no corriendo
+``` bash
+docker ps -a
+```
+
+### Muestra los id de todos los contenedores
+``` bash
+docker ps -aq
+```
+
+### Detener todos los contenedores
+``` bash
+docker stop $(docker ps -aq)
+```
+
+### Eliminar todos los contenedores
+``` bash
+docker rm $(docker ps -aq)
+```
+
+### Eliminar todos los contenedores y volumenes
+``` bash
+docker rm -vf $(docker ps -aq) 
+```
+
+### exec es para ejecutar un comando en un container, dentro del contenedor ubuntu queremos ejecutar el comando cat en el archivo etc/hosts 
 ``` bash
 docker exec ubuntu cat etc/hosts
 ```
 
 ### Ejecutar un contenedor en modo interactivo
 ``` bash
-docker exec -it id-container
+docker exec -it id-container-or-container-name
 ```
 
 ### Ejemplo
 ``` bash
 docker exec -it postgres bash
-
 su postgres
 psql
 psql (11.2 (Debian 11.2-1.pgdg90+1))
@@ -163,9 +162,30 @@ Type "help" for help.
 postgres=#
 ```
 
-### Comunicando contenedores: comunicar name-container, ping apache
+### ejecutando comandos en el contenedor apache, en este caso sobreescribiendo el index.html 
 ``` bash
-docker run -it  --link name-container:apache ubuntu:version
+docker exec -it httpd:latest /bin/bash
+ls
+cd htdocs/
+ls
+echo "<h1>Hello world</h1>" >index.html
+exit
+```
+
+### ejecutando comandos en el contenedor nginx, en este caso sobreescribiendo el index.html 
+``` bash
+docker exec -it nginx bash
+ls
+cd usr/share/nginx/html
+ls
+echo "<h1>Hello world</h1>" >index.html
+exit
+```
+
+### Comunicando contenedores: comunicar un contenedor creado name-container con ubuntu
+``` bash
+docker run -it --link container-name:apache ubuntu:formacion
+ping apache
 ```
 
 ### Muestra las redes
@@ -175,7 +195,7 @@ docker network ls
 
 ### Crear una red
 ``` bash
-docker network create name-red
+docker network create red-name
 ``` 
 
 ### Muestra información del contenedor
@@ -195,7 +215,7 @@ docker start id-container
 
 ### Matar varios contenedores(procesos)
 ``` bash
-docker kill id-container id-container2 ...
+docker kill id-container id-container2
 ```
 
 ### 
@@ -206,4 +226,20 @@ docker logs id-container
 ### Solo muestra las primeras 300 lineas
 ``` bash
 docker logs --tail 300 id-container
+```
+
+### Logearte a Docker Hub para subir tu imagen a un repositorio publico
+``` bash
+docker login
+docker login -u <<your_dockerhub_username>>
+```
+
+### Subir una imagen a Docker Hub
+``` bash
+docker push <<your_dockerhub_username>>/<<image-name>>
+```
+
+### Deslogearte de Docker Hub
+``` bash
+docker logout
 ```
