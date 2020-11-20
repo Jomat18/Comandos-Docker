@@ -119,7 +119,7 @@ docker run --name <<container_name>> -p 80:8080 -d <<your_dockerhub_username>>/<
 ```
 ### Ejemplo corriendo un contenedor de la base de datos postgres, postgres escuchara en el puerto 5432 y la entrada al contenedor sera por el puerto 6551
 ``` bash
-docker run -d --name node1 -p 6551:5432 postgres
+docker run -d --name container_name -p 6551:5432 postgres
 ```
 
 ### Corriendo un contenedor del servidor de gitlab a partir de su imagen
@@ -130,6 +130,16 @@ docker run gitlab/gitlab-ce
 ### Corriendo un contenedor apache a partir de la imagen de apache -p le asigna un puerto automaticamente
 ``` bash
 docker run -p httpd:latest 
+```
+
+### Corriendo un contenedor de debian, el contenedor se llamara test y estará en modo detached
+``` bash
+docker run --name test -d -it debian
+```
+
+### Entrar en un container. Esto es en el modo -d que es detached 
+``` bash
+docker attach test 
 ```
 
 ### exec es para ejecutar un comando en un container
@@ -186,11 +196,6 @@ docker start id-container
 ### Matar varios contenedores(procesos)
 ``` bash
 docker kill id-container id-container2 ...
-```
-
-### Entrar en un container cuya terminal cerre, pero sigue corriendo. Esto es en el modo -d que es detached cuando se uso docker run
-``` bash
-docker attach id-container 
 ```
 
 ### 
