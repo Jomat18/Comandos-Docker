@@ -77,7 +77,7 @@ docker pull ubuntu
 docker build -t <<your_dockerhub_username>>/<<image_name>> . 
 ```
 
-### Ejemplo
+### Ejemplo, NOTA: no olvide escribir el punto al final!
 ``` bash
 docker build -t jl18/node .  
 ```
