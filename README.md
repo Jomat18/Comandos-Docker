@@ -72,7 +72,7 @@ docker pull postgres
 docker pull ubuntu
 ```
 
-### Crear una imagen desde un Dockerfile en la carpeta actual y etiquetarla, puede agregar la version si desea al final del nombre de la imagen :<<version>>
+### Crear una imagen desde un Dockerfile en la carpeta actual y etiquetarla, puede agregar la version si desea al final del nombre de la imagen :version, ejemplos :v1, :v1.0.0, etc
 ``` bash
 docker build -t <<your_dockerhub_username>>/<<image_name>> . 
 ```
