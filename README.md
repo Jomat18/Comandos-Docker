@@ -2,21 +2,59 @@
 
 > Un contenedor en docker es un proceso
 
-### Mostrar la version de Docker
+### Evitar escribir sudo al inicio de docker 
+Si desea evitar escribir sudo al ejecutar el comando docker, agregue su nombre de usuario al grupo docker:
+``` bash
+sudo usermod -aG docker ${USER}
+```
+
+### Aplicar cambios
+Para aplicar la nueva membresía de grupo, cierre la sesión del servidor y vuelva a iniciarla o escriba lo siguiente:
+``` bash
+su - ${USER}
+```
+Para continuar, se le solicitará ingresar la contraseña de su usuario.
+
+### Confirmando que se agrego al grupo de docker
+Confirme que ahora su usuario se agregó al grupo docker escribiendo lo siguiente:
+``` bash
+id -nG
+```
+
+### Nota 
+Para la ejecución de los comandos en adelante, solo escriba docker porque ya es usuario del grupo docker. Si eligio no hacerlo, incluya sudo al principio de los comandos.
+
+### Mostrar la version de Docker, con cualquiera de los siguientes comandos
 ``` bash
 docker version
+docker --version
 ```
 
 ### Comandos para el daemon de Docker
 ``` bash
-sudo systemctl start docker
-sudo systemctl enable docker
-sudo systemctl status docker
+systemctl status docker
+systemctl start docker
+systemctl enable docker
+```
+
+# Para ver los comandos disponibles en docker escriba
+``` bash
+docker
 ```
 
 ### Mostrar información de Docker
 ``` bash
 docker info
+```
+
+### Buscar una imagen en Docker Hub, por ejemplo de postgres
+``` bash
+docker search postgres
+```
+
+### Buscando la imagen de ubuntu
+``` bash
+docker search ubuntu
 ```
 
 ### Descargar imagenes desde Docker Hub (repositorio de imagenes)
@@ -29,9 +67,9 @@ docker pull image_name
 docker pull postgres
 ```
 
-### Buscar una imagen
+### Descargando la imagen de ubuntu
 ``` bash
-docker search postgres
+docker pull ubuntu
 ```
 
 ### Crear una imagen desde un Dockerfile en la carpeta actual y etiquetarla
@@ -54,7 +92,7 @@ docker build -t webserver .
 docker tag <<image-name>> <<your_dockerhub_username>>/<<image-name>>
 ```
 
-### Mostrar imagenes creadas
+### Mostrar las imagenes descargadas o creadas con build
 ``` bash
 docker images  
 ```
@@ -74,12 +112,16 @@ docker rmi image-name
 docker rmi -f $(docker images -aq)
 ```
 
-### Correr contenedores de diferentes imagenes publicas desde Docker hub
+### Corriendo contenedores de diferentes imagenes publicas desde Docker hub
 ``` bash
 docker run ansible
 docker run mongodb
 docker run redis
 docker run nodejs
+```
+### Correr un contenedor en modo interactivo con el comando -it
+``` bash
+docker run -it ubuntu
 ```
 
 ### Correr un contenedor en el puerto 80 para Docker Host y 8080 para la aplicacion de la imagen, -d significa modo detached
