@@ -9,11 +9,11 @@ sudo usermod -aG docker ${USER}
 ```
 
 ### Aplicar cambios
-Para aplicar la nueva membresía de grupo, cierre la sesión del servidor y vuelva a iniciarla o escriba lo siguiente:
+Ingrese a su usuario
 ``` bash
 su - ${USER}
 ```
-Para continuar, se le solicitará ingresar la contraseña de su usuario.
+Para continuar, se le solicitará ingresar la contraseña de su usuario. Para salir del usuario escriba exit
 
 ### Confirmando que se agrego al grupo de docker
 Confirme que ahora su usuario se agregó al grupo docker escribiendo lo siguiente:
@@ -72,14 +72,14 @@ docker pull postgres
 docker pull ubuntu
 ```
 
-### Crear una imagen desde un Dockerfile en la carpeta actual y etiquetarla
+### Crear una imagen desde un Dockerfile en la carpeta actual y etiquetarla puede agregar la version si desea <<your_dockerhub_username>>/<<image_name>>:<<version>>
 ``` bash
-docker build -t <<your_dockerhub_username>>/<<image_name>>:<<version>> . 
+docker build -t <<your_dockerhub_username>>/<<image_name>> . 
 ```
 
 ### Ejemplo
 ``` bash
-docker build -t jl18/node:v1.0.0 .  
+docker build -t jl18/node .  
 ```
 
 ### Construir una imagen desde un Dockerfile con la etiqueta webserver
@@ -123,6 +123,7 @@ docker run nodejs
 ``` bash
 docker run -it ubuntu
 ```
+Para salir escriba exit
 
 ### Correr un contenedor en el puerto 80 para Docker Host y 8080 para la aplicacion de la imagen, -d significa modo detached
 ``` bash
@@ -189,7 +190,7 @@ docker rm -vf $(docker ps -aq)
 docker exec ubuntu cat etc/hosts
 ```
 
-### Ejecutar un contenedor en modo interactivo
+### Ejecutar un contenedor en modo interactivo, si no recuerda el id del contenedor escriba docker ps -a
 ``` bash
 docker exec -it id-container-or-container-name
 ```
@@ -240,17 +241,17 @@ docker network ls
 docker network create red-name
 ``` 
 
-### Muestra información del contenedor
+### Muestra información del contenedor, si no recuerda el id del contenedor escriba docker ps -a
 ``` bash
 docker inspect id-container
 ```
 
-### Detener un contenedor
+### Detener un contenedor usando su id, si no recuerda el id del contenedor escriba docker ps -a
 ``` bash
 docker stop id-container
 ```
 
-### Iniciar un contenedor
+### Iniciar un contenedor usando su id, si no recuerda el id del contenedor escriba docker ps -a
 ``` bash
 docker start id-container
 ```
@@ -260,7 +261,7 @@ docker start id-container
 docker kill id-container id-container2
 ```
 
-### 
+### Mostrando los logs del contenedor
 ``` bash
 docker logs id-container
 ```
@@ -279,6 +280,11 @@ docker login -u <<your_dockerhub_username>>
 ### Subir una imagen a Docker Hub
 ``` bash
 docker push <<your_dockerhub_username>>/<<image-name>>
+```
+
+### Ejemplo
+``` bash
+docker push jl18/node  
 ```
 
 ### Deslogearte de Docker Hub
