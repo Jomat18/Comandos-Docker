@@ -34,6 +34,7 @@ docker --version
 ``` bash
 systemctl status docker
 systemctl start docker
+systemctl stop docker
 systemctl enable docker
 ```
 
